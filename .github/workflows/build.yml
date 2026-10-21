@@ -3,29 +3,29 @@ name: Build WeFlow Electron
 on:
   push:
     branches: [ main ]
-  workflow_dispatch: # 支持手动点按钮触发构建（推荐）
+  workflow_dispatch:
 
 jobs:
   build-windows:
     runs-on: windows-latest
     steps:
-      - name: 检出代码
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 设置Node环境
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
           cache: 'npm'
 
-      - name: 安装依赖
-        run: npm ci
+      - name: Install dependencies
+        run: npm install
 
-      - name: 打包 Electron Windows
-        run: npm run build
+      - name: Build Electron Windows
+        run: npm run electron:build
 
-      - name: 上传打包产物
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: WeFlow-win-exe
-          path: release/
+          name: WeFlow-win
+          path: dist/
